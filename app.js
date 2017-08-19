@@ -28,13 +28,27 @@ app.get('/', (req, res) => {
 	})
 })
 
+function acceptsHtml(header) {
+	var accepts = header.split(',')
+	for (var i = 0; i < accepts.length; i++) {
+		if (accepts[i] === 'text/html') {
+			return true
+		}
+	}
+}
+
 app.post('/send', (req, res) => {
 	if (req.body && req.body.tweet) {
 		tweets.push(req.body.tweet)
-		res.send({
-			status: 'ok',
-			message: 'Tweet received'
-		})
+		if (req.accepts('text/html')) {
+			res.redirect('/',301)
+		} else {
+			res.send({
+				status: 'ok',
+				message: 'Tweet received'
+			})
+		}
+		
 	} else {
 		//no tweet?
 		res.send({
