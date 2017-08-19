@@ -6,6 +6,8 @@ var app = express()
 app.use(bodyParser.urlencoded({ extended: false}))
 .use(bodyParser.json())
 
+app.set('view engine', 'ejs')
+
 app.listen(8000, () => {
 	console.log('App running on port 8000')
 })
@@ -13,7 +15,17 @@ app.listen(8000, () => {
 var tweets = []
 
 app.get('/', (req, res) => {
-	res.send('Welcome to Node Twitter')
+	var title = 'Duy Ngo',
+			header = 'Welcome to Duy Ngo'
+
+	res.render('home', {
+		// locals: {
+			title: title,
+			header: header,
+			tweets: tweets,
+			stylesheets: ['public/style.css']
+		// }
+	})
 })
 
 app.post('/send', (req, res) => {
